@@ -10,15 +10,14 @@
     <actions>
         <action
                 id="git.custompush.toolmenu"
-                class="org.jetbrains.plugins.git.custompush.actions.GitRepoAction"
+                class="org.jetbrains.plugins.git.custompush.actions.PushWithOptionAction"
                 text="Push with options..."
                 description="Push with options...">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="Git.MainMenu" anchor="last"/>
         </action>
         <action
                 id="git.custompush.toolwindow.button"
-                class="org.jetbrains.plugins.git.custompush.actions.GitRepoAction"
-                text="Push with options..."
+                class="org.jetbrains.plugins.git.custompush.actions.PushWithOptionAction"
                 description="Push with options...">
             <add-to-group group-id="Vcs.Commit.PrimaryCommitActions" anchor="last"/>
         </action>
