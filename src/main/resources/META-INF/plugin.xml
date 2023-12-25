@@ -1,0 +1,26 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>org.custompush</id>
+    <name>Git Custom Push</name>
+    <vendor>Hakeem</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>Git4Idea</depends>
+
+    <actions>
+        <action
+                id="git.custompush.toolmenu"
+                class="org.jetbrains.plugins.git.custompush.actions.GitRepoAction"
+                text="Push with options..."
+                description="Push with options...">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action
+                id="git.custompush.toolwindow.button"
+                class="org.jetbrains.plugins.git.custompush.actions.GitRepoAction"
+                text="Push with options..."
+                description="Push with options...">
+            <add-to-group group-id="Vcs.Commit.PrimaryCommitActions" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
