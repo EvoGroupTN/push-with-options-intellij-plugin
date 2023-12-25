@@ -2,6 +2,17 @@
 <idea-plugin>
     <id>org.custompush</id>
     <name>Git Custom Push</name>
+    <description>
+        <![CDATA[
+      Provides integration with <a href="https://git-scm.com/">Git</a>.
+        <ul>
+        <li>Adds a new button in the commit tool window and the Git menu to push with options</li>
+        <li>Checkboxes for a predefined push options</li>
+        <li>The ability to add other options via a text field</li>
+        </ul>
+      ]]>
+    </description>
+    <category>Version Controls</category>
     <vendor>Hakeem</vendor>
 
     <depends>com.intellij.modules.platform</depends>
