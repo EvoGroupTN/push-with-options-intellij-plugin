@@ -10,21 +10,28 @@ import git4idea.GitUtil
 import git4idea.GitVcs
 import git4idea.actions.GitRepositoryAction
 import git4idea.commands.*
-import git4idea.repo.GitRemote
+import git4idea.repo.GitBranchTrackInfo
 import git4idea.repo.GitRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.plugins.git.custompush.ui.GitPushDialog
 
-class GitRepoAction: GitRepositoryAction() {
+class GitRepoAction : GitRepositoryAction() {
+    private var trackInfo: GitBranchTrackInfo? = null
+    private lateinit var repository: GitRepository
 
     override fun getActionName(): String {
         return "Push with options..."
     }
 
-    override fun perform(project: Project, virtualFiles: MutableList<VirtualFile>, virtualFile: VirtualFile) {
-        val dialog = GitPushDialog(true)
+    override fun perform(project: Project,
+                         virtualFiles: MutableList<VirtualFile>,
+                         virtualFile: VirtualFile) {
+        getRemoteBranchName(project, virtualFile)
+        val dialog = GitPushDialog(project, trackInfo?.remoteBranch?.name, true)
         dialog.show()
         if (dialog.isOK()) {
-            runPush(project, virtualFile, dialog.getPushOptions())
+            runPush(project, dialog.getPushOptions())
         }
     }
 
@@ -32,21 +39,23 @@ class GitRepoAction: GitRepositoryAction() {
         return true
     }
 
-    private fun runPush(project: Project, virtualFile: VirtualFile, pushOptions: List<String>) {
+    private fun getRemoteBranchName(project: Project,
+                                    virtualFile: VirtualFile) {
+        runBlocking(Dispatchers.Default) {
+            repository = project.let { repo ->
+                GitUtil.getRepositoryForFile(repo, virtualFile)
+            }
+            trackInfo = GitUtil.getTrackInfoForCurrentBranch(repository)
+        }
+    }
+
+    private fun runPush(project: Project,
+                        pushOptions: List<String>) {
         val task: Task.Backgroundable =
             object : Task.Backgroundable(project, "push with options", false) {
                 override fun run(indicator: ProgressIndicator) {
                     indicator.checkCanceled()
-                    val repository = project.let { repo ->
-                        GitUtil.getRepositoryForFile(repo, virtualFile)
-                    }
-                    val trackInfo = GitUtil.getTrackInfoForCurrentBranch(repository)
-                    val gitRemote = trackInfo?.remote
-                    val url = gitRemote?.firstUrl;
-                    if (trackInfo == null || gitRemote == null || url == null) {
-                        throw Exception("Repository Exception")
-                    }
-                    val result: GitCommandResult = push(repository, gitRemote, url, pushOptions)
+                    val result: GitCommandResult = push(repository, pushOptions)
                     indicator.checkCanceled()
                     handleResult(project, result)
                 }
@@ -54,7 +63,8 @@ class GitRepoAction: GitRepositoryAction() {
         GitVcs.runInBackground(task)
     }
 
-    private fun handleResult(project: Project, pushResult: GitCommandResult) {
+    private fun handleResult(project: Project,
+                             pushResult: GitCommandResult) {
         val vcsNotifier = VcsNotifier.getInstance(project)
         if (pushResult.success()) {
             vcsNotifier.notifySuccess(
@@ -73,24 +83,29 @@ class GitRepoAction: GitRepositoryAction() {
 
     private fun push(
         repository: GitRepository,
-        remote: GitRemote,
-        url: String,
         pushOptions: List<String>
     ): GitCommandResult {
+        val gitRemote = trackInfo?.remote
+        val url = gitRemote?.firstUrl ?: repository.remotes.firstOrNull()?.firstUrl
         val progressListener = GitStandardProgressAnalyzer.createListener(ZDummyProgressIndicator())
         val result = Git.getInstance().runCommand {
             val h = GitLineHandler(
                 repository.project, repository.root,
                 GitCommand.PUSH
             )
-            h.setUrl(url)
+            if (url != null) h.setUrl(url)
             h.setSilent(false)
             h.setStdoutSuppressed(false)
             h.addLineListener(progressListener)
+            if (gitRemote?.name != null) {
+                h.addParameters(gitRemote.name)
+            } else {
+                h.addParameters("origin")
+                h.addParameters(repository.currentBranchName + ":" + repository.currentBranchName)
+            }
             h.addParameters("--progress")
-            h.addParameters(remote.name)
-            pushOptions.forEach {
-                option -> h.addParameters(option)
+            pushOptions.forEach { option ->
+                h.addParameters(option)
             }
             h
         }

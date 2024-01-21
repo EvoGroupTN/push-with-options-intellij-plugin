@@ -1,11 +1,58 @@
-<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M32.0845 7.94025V4H24.0203V7.9896H16.029V4H7.91553V7.94025H4V36H16.0044V32.0045C16.0058 30.9457 16.4274 29.9308 17.1766 29.1826C17.9258 28.4345 18.9412 28.0143 20 28.0143C21.0588 28.0143 22.0743 28.4345 22.8234 29.1826C23.5726 29.9308 23.9942 30.9457 23.9956 32.0045V36H36V7.94025H32.0845Z"
-          fill="url(#paint0_linear)"/>
-    <defs>
-        <linearGradient id="paint0_linear" x1="2.94192" y1="4.89955" x2="37.7772" y2="39.7345" gradientUnits="userSpaceOnUse">
-            <stop offset="0.15937" stop-color="#3BEA62"/>
-            <stop offset="0.5404" stop-color="#3C99CC"/>
-            <stop offset="0.93739" stop-color="#6B57FF"/>
-        </linearGradient>
-    </defs>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+
+<svg
+   width="40"
+   height="40"
+   viewBox="-1.6 -1.6 22 22"
+   fill="none"
+   stroke="#000000"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="git-svgrepo-com.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs13" />
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="8.671875"
+     inkscape:cx="25.254054"
+     inkscape:cy="31.942342"
+     inkscape:window-width="1608"
+     inkscape:window-height="1038"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg9"
+     width="40px" />
+  <g
+     id="SVGRepo_bgCarrier"
+     stroke-width="0" />
+  <g
+     id="SVGRepo_tracerCarrier"
+     stroke-linecap="round"
+     stroke-linejoin="round" />
+  <g
+     id="SVGRepo_iconCarrier"
+     transform="matrix(0.68290732,0,0,0.68290732,-1.5265076,-1.5265076)">
+    <path
+       d="m 2.58536,17.4132 c -0.78048,-0.7805 -0.78048,-2.0459 0,-2.8264 L 14.5868,2.58536 c 0.7805,-0.78048 2.0459,-0.78048 2.8264,0 L 29.4146,14.5868 c 0.7805,0.7805 0.7805,2.0459 0,2.8264 L 17.4132,29.4146 c -0.7805,0.7805 -2.0459,0.7805 -2.8264,0 z"
+       fill="#ee513b"
+       id="path4" />
+    <path
+       d="m 12.1489,5.06152 -1.2153,1.21534 3.1389,3.13891 c -0.127,0.27242 -0.1979,0.57624 -0.1979,0.89663 0,0.9096 0.5715,1.6857 1.375,1.9888 v 7.6786 c -0.8035,0.3031 -1.375,1.0792 -1.375,1.9888 0,1.1736 0.9514,2.125 2.125,2.125 1.1736,0 2.125,-0.9514 2.125,-2.125 0,-0.8246 -0.4697,-1.5396 -1.1562,-1.8918 v -7.7651 l 3.0005,3.0005 c -0.1208,0.2669 -0.188,0.5632 -0.188,0.8752 0,1.1736 0.9514,2.125 2.125,2.125 1.1736,0 2.125,-0.9514 2.125,-2.125 0,-1.1736 -0.9514,-2.125 -2.125,-2.125 -0.2281,0 -0.4477,0.0359 -0.6537,0.1024 l -3.2225,-3.2225 c 0.0617,-0.199 0.0949,-0.4106 0.0949,-0.6299 0,-1.17362 -0.9514,-2.12502 -2.125,-2.12502 -0.2193,0 -0.4308,0.03323 -0.6299,0.09492 z"
+       fill="#ffffff"
+       id="path6" />
+  </g>
 </svg>
