@@ -14,7 +14,7 @@
     </description>
     <category>Version Controls</category>
     <vendor>Hakeem</vendor>
-    <version>1.0.0</version>
+    <version>2.0.1</version>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>Git4Idea</depends>
@@ -23,7 +23,7 @@
         <action
                 id="git.custompush.toolmenu"
                 class="org.jetbrains.plugins.git.custompush.actions.PushWithOptionAction"
-                text="Push with options..."
+                text="Push with Options..."
                 description="Push with options...">
             <add-to-group group-id="Git.MainMenu" anchor="last"/>
         </action>
