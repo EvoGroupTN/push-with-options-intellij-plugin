@@ -68,6 +68,7 @@ class GitRepoAction : GitRepositoryAction() {
         val vcsNotifier = VcsNotifier.getInstance(project)
         if (pushResult.success()) {
             vcsNotifier.notifySuccess(
+                // extract strings to constants
                 "git.custompush.success",
                 "Push success",
                 "Commits are pushed successfully"
@@ -88,7 +89,8 @@ class GitRepoAction : GitRepositoryAction() {
         val gitRemote = trackInfo?.remote
         val url = gitRemote?.firstUrl ?: repository.remotes.firstOrNull()?.firstUrl
         val progressListener = GitStandardProgressAnalyzer.createListener(ZDummyProgressIndicator())
-        val result = Git.getInstance().runCommand {
+        val result = Git.getInstance()
+            .runCommand {
             val h = GitLineHandler(
                 repository.project, repository.root,
                 GitCommand.PUSH
@@ -100,8 +102,9 @@ class GitRepoAction : GitRepositoryAction() {
             if (gitRemote?.name != null) {
                 h.addParameters(gitRemote.name)
             } else {
+                h.addParameters("--set-upstream")
                 h.addParameters("origin")
-                h.addParameters(repository.currentBranchName + ":" + repository.currentBranchName)
+                h.addParameters(repository.currentBranchName)
             }
             h.addParameters("--progress")
             pushOptions.forEach { option ->
