@@ -8,7 +8,7 @@ import javax.swing.JPanel
 
 class AppSettingsComponent {
     val panel: JPanel
-    private val isCommitAndPushButtonHidden = JBCheckBox("Hide \"Commit and Push...\" button in the commit tool window")
+    private val isCommitAndPushButtonHidden = JBCheckBox("Hide \"Commit and Push...\" button in the commit tool window (needs restart)")
 
     init {
         panel = FormBuilder.createFormBuilder()
