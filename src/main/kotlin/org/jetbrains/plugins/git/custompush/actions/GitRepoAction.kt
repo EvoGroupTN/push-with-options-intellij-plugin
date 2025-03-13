@@ -1,33 +1,25 @@
 package org.jetbrains.plugins.git.custompush.actions
 
-import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.VcsNotifier
-import com.intellij.openapi.vfs.VirtualFile
 import git4idea.GitUtil
 import git4idea.GitVcs
-import git4idea.actions.GitRepositoryAction
 import git4idea.commands.*
 import git4idea.repo.GitBranchTrackInfo
 import git4idea.repo.GitRepository
+import git4idea.repo.GitRepositoryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.plugins.git.custompush.ui.GitPushDialog
 
-class GitRepoAction : GitRepositoryAction() {
+class GitRepoAction {
     private var trackInfo: GitBranchTrackInfo? = null
     private lateinit var repository: GitRepository
 
-    override fun getActionName(): String {
-        return "Push with options..."
-    }
-
-    override fun perform(project: Project,
-                         virtualFiles: MutableList<VirtualFile>,
-                         virtualFile: VirtualFile) {
-        getRemoteBranchName(project, virtualFile)
+    fun perform(project: Project) {
+        getRemoteBranchName(project)
         val dialog = GitPushDialog(project, trackInfo?.remoteBranch?.name, true)
         dialog.show()
         if (dialog.isOK()) {
@@ -35,16 +27,9 @@ class GitRepoAction : GitRepositoryAction() {
         }
     }
 
-    override fun isEnabled(e: AnActionEvent?): Boolean {
-        return true
-    }
-
-    private fun getRemoteBranchName(project: Project,
-                                    virtualFile: VirtualFile) {
+    private fun getRemoteBranchName(project: Project) {
         runBlocking(Dispatchers.Default) {
-            repository = project.let { repo ->
-                GitUtil.getRepositoryForFile(repo, virtualFile)
-            }
+            repository = GitRepositoryManager.getInstance(project).repositories.first() ?: error("No git repository found")
             trackInfo = GitUtil.getTrackInfoForCurrentBranch(repository)
         }
     }

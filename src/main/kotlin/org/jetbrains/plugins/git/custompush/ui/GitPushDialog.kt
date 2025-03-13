@@ -1,4 +1,4 @@
-package org.jetbrains.plugins.git.custompush.ui;
+package org.jetbrains.plugins.git.custompush.ui
 
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.project.Project
@@ -38,10 +38,10 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
         }
         otherOptionsCheckBox = JBCheckBox("Other options")
         otherOptionsTextField = JBTextField()
-        otherOptionsTextField.setEnabled(false)
-        otherOptionsCheckBox.addItemListener { e ->
-            otherOptionsTextField.setEnabled(otherOptionsCheckBox.isSelected())
-            otherOptionsTextField.setEditable(otherOptionsCheckBox.isSelected())
+        otherOptionsTextField.isEnabled = false
+        otherOptionsCheckBox.addItemListener { _ ->
+            otherOptionsTextField.isEnabled = otherOptionsCheckBox.isSelected
+            otherOptionsTextField.isEditable = otherOptionsCheckBox.isSelected
         }
 
         panel!!.add(otherOptionsCheckBox)
@@ -72,7 +72,7 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
         checkboxes.forEach {
             if (it.isSelected) pushOptions.add(it.text)
         }
-        if (otherOptionsCheckBox.isSelected()) pushOptions.add(otherOptionsTextField.text)
+        if (otherOptionsCheckBox.isSelected) pushOptions.add(otherOptionsTextField.text)
         return pushOptions
     }
 

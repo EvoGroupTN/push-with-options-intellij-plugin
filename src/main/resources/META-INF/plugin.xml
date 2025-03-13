@@ -35,20 +35,10 @@
         </action>
         <action
                 id="git.custompush.toolwindow.button"
-                class="org.jetbrains.plugins.git.custompush.actions.PushWithOptionAction"
+                class="org.jetbrains.plugins.git.custompush.actions.CustomGitButtonAction"
                 description="Push with options...">
             <add-to-group group-id="Vcs.Commit.PrimaryCommitActions" anchor="last"/>
         </action>
         <unregister id="Git.Commit.And.Push.Executor"/>
-        <action id="Git.Commit.And.Push.Executor" class="org.jetbrains.plugins.git.custompush.actions.CommitAndPushAction">
-            <add-to-group group-id="Vcs.Commit.PrimaryCommitActions"/>
-            <keyboard-shortcut first-keystroke="control alt K" keymap="$default"/>
-        </action>
     </actions>
-    <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable parentId="tools" instance="org.jetbrains.plugins.git.custompush.settings.AppSettingsConfigurable"
-                                 id="org.jetbrains.plugins.git.custompush.settings.AppSettingsConfigurable"
-                                 displayName="Git Custom Push"/>
-        <applicationService serviceImplementation="org.jetbrains.plugins.git.custompush.settings.AppSettingsState"/>
-    </extensions>
 </idea-plugin>
