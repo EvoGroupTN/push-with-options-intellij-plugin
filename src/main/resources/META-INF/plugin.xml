@@ -14,11 +14,11 @@
     </description>
     <category>Version Controls</category>
     <vendor>Hakeem</vendor>
-    <version>2.0.4</version>
+    <version>2.1.0</version>
     <change-notes><![CDATA[
     <ul>
-    <li>Replace the usage of ApiInternal classes and methods</li>
-    <li>Fix "Push with Options..." button style</li>
+    <li>Add commit and push with options feature</li>
+    <li>Adapt the button style for a better user experience</li>
     </ul>
     ]]></change-notes>
 
