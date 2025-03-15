@@ -15,6 +15,7 @@
     <category>Version Controls</category>
     <vendor>Hakeem</vendor>
     <version>2.1.0</version>
+    <idea-version since-build="231"/>
     <change-notes><![CDATA[
     <ul>
     <li>Add commit and push with options feature</li>
@@ -40,5 +41,16 @@
             <add-to-group group-id="Vcs.Commit.PrimaryCommitActions" anchor="last"/>
         </action>
         <unregister id="Git.Commit.And.Push.Executor"/>
+        <action id="Git.Commit.And.Push.Executor" class="org.jetbrains.plugins.git.custompush.actions.CommitAndPushAction">
+            <add-to-group group-id="Vcs.Commit.PrimaryCommitActions"/>
+            <keyboard-shortcut first-keystroke="control alt K" keymap="$default"/>
+        </action>
     </actions>
+    <extensions defaultExtensionNs="com.intellij">
+        <checkinHandlerFactory implementation="org.jetbrains.plugins.git.custompush.executors.CustomCheckinHandlerFactory"/>
+        <applicationConfigurable parentId="tools" instance="org.jetbrains.plugins.git.custompush.settings.AppSettingsConfigurable"
+                                 id="org.jetbrains.plugins.git.custompush.settings.AppSettingsConfigurable"
+                                 displayName="Git Custom Push"/>
+        <applicationService serviceImplementation="org.jetbrains.plugins.git.custompush.settings.AppSettingsState"/>
+    </extensions>
 </idea-plugin>
