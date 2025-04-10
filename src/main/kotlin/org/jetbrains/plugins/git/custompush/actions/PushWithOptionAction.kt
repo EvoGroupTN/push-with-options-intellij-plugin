@@ -37,8 +37,9 @@ class CustomGitButtonAction : AnAction(), CustomComponentAction {
         override fun actionPerformed(e: ActionEvent) {
             val dataContext = DataManager.getInstance().getDataContext(e.source as JComponent)
             val commitWorkflow = dataContext.getData(VcsDataKeys.COMMIT_WORKFLOW_HANDLER)
+            val project = CommonDataKeys.PROJECT.getData(dataContext)
             commitWorkflow?.execute(
-                CustomCommitExecutor()
+                project?.getService(CustomCommitExecutor::class.java) ?: error("No project found")
             )
         }
     }

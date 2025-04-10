@@ -1,13 +1,13 @@
 package org.jetbrains.plugins.git.custompush.executors
 
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.changes.CommitContext
 import com.intellij.openapi.vcs.changes.CommitExecutor
 import com.intellij.openapi.vcs.changes.CommitSession
-import com.intellij.openapi.vcs.checkin.CheckinHandler
-import com.intellij.openapi.vcs.checkin.CheckinHandlerFactory
+import com.intellij.openapi.vcs.checkin.*
 import com.intellij.vcs.commit.commitExecutorProperty
 import org.jetbrains.annotations.Nls
 import org.jetbrains.plugins.git.custompush.actions.GitRepoAction
@@ -16,7 +16,11 @@ import org.jetbrains.plugins.git.custompush.actions.GitRepoAction
 private val IS_PUSH_AFTER_COMMIT_KEY = Key.create<Boolean>("Git.Commit.IsPushAfterCommit")
 internal var CommitContext.isPushAfterCommit: Boolean by commitExecutorProperty(IS_PUSH_AFTER_COMMIT_KEY)
 
+@Service(
+    Service.Level.PROJECT,
+)
 class CustomCommitExecutor : CommitExecutor {
+    var isCustomPushAfterCommit: Boolean = false
     @Nls
     override fun getActionText(): String = "Commit and Push with Options..."
 
@@ -30,6 +34,7 @@ class CustomCommitExecutor : CommitExecutor {
 
     override fun createCommitSession(commitContext: CommitContext): CommitSession {
         commitContext.isPushAfterCommit = false
+        isCustomPushAfterCommit = true
         return CommitSession.VCS_COMMIT
     }
 
@@ -39,18 +44,12 @@ class CustomCommitExecutor : CommitExecutor {
 }
 
 class CustomCheckHandler(private val project: Project): CheckinHandler() {
-    private var isCustomCommitExecuter = false
 
     override fun checkinSuccessful() {
-        if (isCustomCommitExecuter)
+        if (project.getService(CustomCommitExecutor::class.java)?.isCustomPushAfterCommit == true) {
             GitRepoAction().perform(project)
-        else
-            super.checkinSuccessful()
-    }
-
-    override fun acceptExecutor(executor: CommitExecutor?): Boolean {
-        isCustomCommitExecuter = executor is CustomCommitExecutor
-        return isCustomCommitExecuter
+            project.getService(CustomCommitExecutor::class.java)?.isCustomPushAfterCommit = false
+        }
     }
 
 }
