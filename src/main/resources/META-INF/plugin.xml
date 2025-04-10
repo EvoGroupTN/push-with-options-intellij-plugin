@@ -14,13 +14,12 @@
     </description>
     <category>Version Controls</category>
     <vendor>Hakeem</vendor>
-    <version>2.1.1</version>
+    <version>2.2.0</version>
     <idea-version since-build="233"/>
     <change-notes><![CDATA[
     <ul>
-    <li>Add commit and push with options feature</li>
-    <li>Adapt the button style for a better user experience</li>
-    <li>Add compatibility min version (v231.*)</li>
+    <li>Upgrade to intellij plugin platform 2.5.0</li>
+    <li>Fix the commit and custom push issue</li>
     </ul>
     ]]></change-notes>
 
