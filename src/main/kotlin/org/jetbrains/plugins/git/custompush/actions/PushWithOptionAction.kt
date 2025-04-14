@@ -17,6 +17,7 @@ class CustomGitButtonAction : AnAction(), CustomComponentAction {
     private val gitRepoAction: GitRepoAction = GitRepoAction()
 
     override fun actionPerformed(e: AnActionEvent) {
+        commitAndPush(e.dataContext)
     }
 
     override fun createCustomComponent(presentation: Presentation, place: String): JComponent {
@@ -36,12 +37,16 @@ class CustomGitButtonAction : AnAction(), CustomComponentAction {
     private fun createMainButtonAction(presentation: Presentation) = object : AbstractAction(presentation.text) {
         override fun actionPerformed(e: ActionEvent) {
             val dataContext = DataManager.getInstance().getDataContext(e.source as JComponent)
-            val commitWorkflow = dataContext.getData(VcsDataKeys.COMMIT_WORKFLOW_HANDLER)
-            val project = CommonDataKeys.PROJECT.getData(dataContext)
-            commitWorkflow?.execute(
-                project?.getService(CustomCommitExecutor::class.java) ?: error("No project found")
-            )
+            commitAndPush(dataContext)
         }
+    }
+
+    private fun commitAndPush(dataContext: DataContext) {
+        val commitWorkflow = dataContext.getData(VcsDataKeys.COMMIT_WORKFLOW_HANDLER)
+        val project = CommonDataKeys.PROJECT.getData(dataContext)
+        commitWorkflow?.execute(
+            project?.getService(CustomCommitExecutor::class.java) ?: error("No project found")
+        )
     }
 
     private fun createOptionsArray(): Array<Action> = arrayOf(
