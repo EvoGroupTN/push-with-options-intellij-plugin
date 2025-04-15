@@ -15,6 +15,7 @@ import javax.swing.JComponent
 class GitPushDialog(project: Project, private var remoteBranch: String?, canBeParent: Boolean) : DialogWrapper(canBeParent) {
     private val OTHER_OPTIONS_KEY = "other_options"
     private val OTHER_OPTIONS_TEXT_KEY = "other_options_text"
+    private val PUSH_OPTIONS_FILE = ".push-options"
 
     private var panel: JBPanel<JBPanel<*>>? = null
     private val otherOptionsCheckBox: JBCheckBox
@@ -24,7 +25,9 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
     init {
         remoteBranch = remoteBranch?:"new branch"
         title = "Push to $remoteBranch"
-        val pushOptionsFile = File(project.basePath + "/.push-options")
+        var pushOptionsFile = File(project.basePath + "/" + PUSH_OPTIONS_FILE)
+        if (!(pushOptionsFile.exists() && pushOptionsFile.isFile()))
+            pushOptionsFile = File(System.getProperty("user.home") + "/" + PUSH_OPTIONS_FILE)
         if (pushOptionsFile.exists() && pushOptionsFile.isFile()) {
             pushOptionsFile.useLines {
                 lines -> lines.filter { !it.startsWith("#") }.forEach {

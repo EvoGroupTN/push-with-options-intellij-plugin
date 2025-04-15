@@ -8,7 +8,8 @@ Screenshots:
 
 
 ## Push Options File Config:
-You need to add a file called ``.push-options`` in the repository root (no need to commit it). 
+You need to add a file called ``.push-options`` in the repository root (no need to commit it) or user home directory.
+The repository root placement takes precedence.
 
 The push options file contains the list of push options:  
 Example:
