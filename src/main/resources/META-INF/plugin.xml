@@ -14,11 +14,11 @@
     </description>
     <category>Version Controls</category>
     <vendor>Hakeem</vendor>
-    <version>2.2.1</version>
+    <version>2.3.0</version>
     <idea-version since-build="233"/>
     <change-notes><![CDATA[
     <ul>
-    <li>Fix the modal commit window "commit and custom push" issue</li>
+    <li>Push options config file .push-options can be loaded from user home directory. Thanks to <a href="https://github.com/HerbalPancake">HerbalPancake</a></li>
     </ul>
     ]]></change-notes>
 
