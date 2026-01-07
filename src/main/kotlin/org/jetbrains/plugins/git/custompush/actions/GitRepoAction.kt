@@ -23,7 +23,15 @@ class GitRepoAction {
         val dialog = GitPushDialog(project, trackInfo?.remoteBranch?.name, true)
         dialog.show()
         if (dialog.isOK()) {
-            runPush(project, dialog.getPushOptions(), dialog.getRemoteBranch())
+            try {
+                runPush(project, dialog.getPushOptions(), dialog.getRemoteBranch())
+            } catch (e: IllegalArgumentException) {
+                VcsNotifier.getInstance(project).notifyError(
+                    "git.custompush.error",
+                    "Invalid branch name",
+                    e.message ?: "Please enter a valid branch name"
+                )
+            }
         }
     }
 

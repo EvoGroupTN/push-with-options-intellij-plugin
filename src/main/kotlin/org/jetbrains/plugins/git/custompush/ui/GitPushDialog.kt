@@ -15,7 +15,6 @@ import javax.swing.JComponent
 class GitPushDialog(project: Project, private var remoteBranch: String?, canBeParent: Boolean) : DialogWrapper(canBeParent) {
     private val OTHER_OPTIONS_KEY = "other_options"
     private val OTHER_OPTIONS_TEXT_KEY = "other_options_text"
-    private val REMOTE_BRANCH_KEY = "remote_branch"
     private val PUSH_OPTIONS_FILE = ".push-options"
 
     private var panel: JBPanel<JBPanel<*>>? = null
@@ -93,7 +92,13 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
     }
     
     fun getRemoteBranch(): String {
-        return remoteBranchTextField.text
+        val branchName = remoteBranchTextField.text.trim()
+        // Validate branch name to prevent command injection
+        // Git branch names can contain alphanumeric, /, -, _, . characters
+        if (branchName.isEmpty() || !branchName.matches(Regex("^[a-zA-Z0-9/_.-]+$"))) {
+            throw IllegalArgumentException("Invalid branch name: $branchName")
+        }
+        return branchName
     }
 
     private fun loadSavedSettings() {
@@ -106,11 +111,8 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
         otherOptionsTextField.isEnabled = otherOptionsCheckBox.isSelected
         otherOptionsTextField.isEditable = otherOptionsCheckBox.isSelected
         
-        // Load saved remote branch or use the default
-        val savedRemoteBranch = propertiesComponent.getValue(REMOTE_BRANCH_KEY, "")
-        if (savedRemoteBranch.isNotEmpty()) {
-            remoteBranchTextField.text = savedRemoteBranch
-        }
+        // Note: We don't load saved remote branch to avoid confusion
+        // The dialog always shows the current tracked branch or "new branch" as default
     }
 
     private fun saveSettings() {
@@ -120,6 +122,6 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
         }
         propertiesComponent.setValue(OTHER_OPTIONS_KEY, otherOptionsCheckBox.isSelected.toString())
         propertiesComponent.setValue(OTHER_OPTIONS_TEXT_KEY, otherOptionsTextField.text)
-        propertiesComponent.setValue(REMOTE_BRANCH_KEY, remoteBranchTextField.text)
+        // Note: We don't save remote branch as it should be determined per push operation
     }
 }
