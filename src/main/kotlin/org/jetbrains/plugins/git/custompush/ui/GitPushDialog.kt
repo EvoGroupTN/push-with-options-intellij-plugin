@@ -24,7 +24,7 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
     private val checkboxes = ArrayList<JBCheckBox>()
 
     init {
-        remoteBranch = remoteBranch?:"new branch"
+        remoteBranch = remoteBranch ?: "new branch"
         title = "Push Options"
         
         // Initialize remote branch text field
@@ -96,7 +96,7 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
         // Validate branch name to prevent command injection and ensure valid Git branch names
         // Git branch names rules:
         // - Cannot be empty
-        // - Can contain alphanumeric, /, -, _, . characters
+        // - Can contain alphanumeric, /, -, _, . characters (underscores are allowed)
         // - Cannot contain consecutive dots (..)
         // - Cannot start or end with ., /, or -
         if (branchName.isEmpty()) {

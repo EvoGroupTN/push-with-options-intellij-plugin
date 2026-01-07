@@ -37,7 +37,7 @@ class GitRepoAction {
 
     private fun getRemoteBranchName(project: Project) {
         runBlocking(Dispatchers.Default) {
-            repository = GitRepositoryManager.getInstance(project).repositories.first() ?: error("No git repository found")
+            repository = GitRepositoryManager.getInstance(project).repositories.firstOrNull() ?: error("No git repository found")
             trackInfo = GitUtil.getTrackInfoForCurrentBranch(repository)
         }
     }
