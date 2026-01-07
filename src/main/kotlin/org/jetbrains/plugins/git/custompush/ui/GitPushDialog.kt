@@ -93,10 +93,25 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
     
     fun getRemoteBranch(): String {
         val branchName = remoteBranchTextField.text.trim()
-        // Validate branch name to prevent command injection
-        // Git branch names can contain alphanumeric, /, -, _, . characters
-        if (branchName.isEmpty() || !branchName.matches(Regex("^[a-zA-Z0-9/_.-]+$"))) {
-            throw IllegalArgumentException("Invalid branch name: $branchName")
+        // Validate branch name to prevent command injection and ensure valid Git branch names
+        // Git branch names rules:
+        // - Cannot be empty
+        // - Can contain alphanumeric, /, -, _, . characters
+        // - Cannot contain consecutive dots (..)
+        // - Cannot start or end with ., /, or -
+        if (branchName.isEmpty()) {
+            throw IllegalArgumentException("Branch name cannot be empty")
+        }
+        if (!branchName.matches(Regex("^[a-zA-Z0-9/_.-]+$"))) {
+            throw IllegalArgumentException("Branch name contains invalid characters")
+        }
+        if (branchName.contains("..")) {
+            throw IllegalArgumentException("Branch name cannot contain consecutive dots (..)")
+        }
+        if (branchName.startsWith(".") || branchName.endsWith(".") || 
+            branchName.startsWith("/") || branchName.endsWith("/") ||
+            branchName.startsWith("-") || branchName.endsWith("-")) {
+            throw IllegalArgumentException("Branch name cannot start or end with '.', '/', or '-'")
         }
         return branchName
     }
