@@ -23,7 +23,7 @@ class GitRepoAction {
         val dialog = GitPushDialog(project, trackInfo?.remoteBranch?.name, true)
         dialog.show()
         if (dialog.isOK()) {
-            runPush(project, dialog.getPushOptions())
+            runPush(project, dialog.getPushOptions(), dialog.getRemoteBranch())
         }
     }
 
@@ -35,12 +35,13 @@ class GitRepoAction {
     }
 
     private fun runPush(project: Project,
-                        pushOptions: List<String>) {
+                        pushOptions: List<String>,
+                        remoteBranch: String) {
         val task: Task.Backgroundable =
             object : Task.Backgroundable(project, "push with options", false) {
                 override fun run(indicator: ProgressIndicator) {
                     indicator.checkCanceled()
-                    val result: GitCommandResult = push(repository, pushOptions)
+                    val result: GitCommandResult = push(repository, pushOptions, remoteBranch)
                     indicator.checkCanceled()
                     handleResult(project, result)
                 }
@@ -69,7 +70,8 @@ class GitRepoAction {
 
     private fun push(
         repository: GitRepository,
-        pushOptions: List<String>
+        pushOptions: List<String>,
+        remoteBranch: String
     ): GitCommandResult {
         val gitRemote = trackInfo?.remote
         val url = gitRemote?.firstUrl ?: repository.remotes.firstOrNull()?.firstUrl
@@ -86,10 +88,11 @@ class GitRepoAction {
             h.addLineListener(progressListener)
             if (gitRemote?.name != null) {
                 h.addParameters(gitRemote.name)
+                h.addParameters("HEAD:$remoteBranch")
             } else {
                 h.addParameters("--set-upstream")
                 h.addParameters("origin")
-                h.addParameters(repository.currentBranchName)
+                h.addParameters("HEAD:$remoteBranch")
             }
             h.addParameters("--progress")
             pushOptions.forEach { option ->
