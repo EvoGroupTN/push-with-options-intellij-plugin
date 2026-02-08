@@ -66,13 +66,13 @@ class ZDummyProgressIndicatorTest {
 
     @Test
     fun `test getFraction returns zero`() {
-        assertEquals("getFraction should return 0.0", 0.0, indicator.getFraction(), 0.0001)
+        assertEquals("getFraction should return 0.0", 0.0, indicator.getFraction(), 0.0)
     }
 
     @Test
     fun `test getFraction after setFraction`() {
         indicator.setFraction(0.5)
-        assertEquals("getFraction should return 0.0 even after setFraction", 0.0, indicator.getFraction(), 0.0001)
+        assertEquals("getFraction should return 0.0 even after setFraction", 0.0, indicator.getFraction(), 0.0)
     }
 
     @Test

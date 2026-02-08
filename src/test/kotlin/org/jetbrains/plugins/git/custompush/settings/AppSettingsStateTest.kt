@@ -61,15 +61,15 @@ class AppSettingsStateTest {
     fun `test multiple state changes`() {
         val state = AppSettingsState()
         
-        assertFalse(state.isCommitAndPushHidden)
+        assertFalse("Initial state should be false", state.isCommitAndPushHidden)
         
         state.isCommitAndPushHidden = true
-        assertTrue(state.isCommitAndPushHidden)
+        assertTrue("State should be true after setting to true", state.isCommitAndPushHidden)
         
         state.isCommitAndPushHidden = false
-        assertFalse(state.isCommitAndPushHidden)
+        assertFalse("State should be false after setting to false", state.isCommitAndPushHidden)
         
         state.isCommitAndPushHidden = true
-        assertTrue(state.isCommitAndPushHidden)
+        assertTrue("State should be true after setting to true again", state.isCommitAndPushHidden)
     }
 }
