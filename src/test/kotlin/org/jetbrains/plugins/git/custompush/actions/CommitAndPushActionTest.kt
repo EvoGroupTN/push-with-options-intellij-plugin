@@ -20,7 +20,6 @@ class CommitAndPushActionTest {
 
     @Test
     fun `test executorId is not empty`() {
-        assertNotNull("executorId should not be null", action.executorId)
         assertTrue("executorId should not be empty", action.executorId.isNotEmpty())
     }
 
