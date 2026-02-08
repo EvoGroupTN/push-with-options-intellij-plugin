@@ -20,6 +20,12 @@ class GitRepoActionTest {
         val performMethod = action::class.declaredMemberFunctions
             .find { it.name == "perform" }
         assertNotNull("GitRepoAction should have perform method", performMethod)
+        
+        // Verify the method signature
+        val parameters = performMethod?.parameters
+        assertNotNull("perform method should have parameters", parameters)
+        assertEquals("perform method should have 2 parameters (this + Project)", 
+            2, parameters?.size)
     }
 
     @Test
