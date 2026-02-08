@@ -113,7 +113,6 @@ class ZDummyProgressIndicatorTest {
         try {
             indicator.checkCanceled()
             // If we reach here, the test passes
-            assertTrue(true)
         } catch (e: Exception) {
             fail("checkCanceled should not throw exception")
         }
@@ -123,7 +122,6 @@ class ZDummyProgressIndicatorTest {
     fun `test start does not throw`() {
         try {
             indicator.start()
-            assertTrue(true)
         } catch (e: Exception) {
             fail("start should not throw exception")
         }
@@ -133,7 +131,6 @@ class ZDummyProgressIndicatorTest {
     fun `test stop does not throw`() {
         try {
             indicator.stop()
-            assertTrue(true)
         } catch (e: Exception) {
             fail("stop should not throw exception")
         }
@@ -143,7 +140,6 @@ class ZDummyProgressIndicatorTest {
     fun `test cancel does not throw`() {
         try {
             indicator.cancel()
-            assertTrue(true)
         } catch (e: Exception) {
             fail("cancel should not throw exception")
         }
@@ -153,7 +149,6 @@ class ZDummyProgressIndicatorTest {
     fun `test pushState does not throw`() {
         try {
             indicator.pushState()
-            assertTrue(true)
         } catch (e: Exception) {
             fail("pushState should not throw exception")
         }
@@ -163,7 +158,6 @@ class ZDummyProgressIndicatorTest {
     fun `test popState does not throw`() {
         try {
             indicator.popState()
-            assertTrue(true)
         } catch (e: Exception) {
             fail("popState should not throw exception")
         }
@@ -173,7 +167,6 @@ class ZDummyProgressIndicatorTest {
     fun `test setModalityProgress does not throw`() {
         try {
             indicator.setModalityProgress(null)
-            assertTrue(true)
         } catch (e: Exception) {
             fail("setModalityProgress should not throw exception")
         }
@@ -183,7 +176,6 @@ class ZDummyProgressIndicatorTest {
     fun `test setText with null does not throw`() {
         try {
             indicator.setText(null)
-            assertTrue(true)
         } catch (e: Exception) {
             fail("setText with null should not throw exception")
         }
@@ -193,7 +185,6 @@ class ZDummyProgressIndicatorTest {
     fun `test setText2 with null does not throw`() {
         try {
             indicator.setText2(null)
-            assertTrue(true)
         } catch (e: Exception) {
             fail("setText2 with null should not throw exception")
         }
