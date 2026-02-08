@@ -35,7 +35,6 @@ kotlin {
 dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("io.mockk:mockk:1.13.8")
     
     intellijPlatform {
         val pluginName = providers.gradleProperty("pluginName")
