@@ -112,7 +112,6 @@ class ZDummyProgressIndicatorTest {
     fun `test checkCanceled does not throw`() {
         try {
             indicator.checkCanceled()
-            // If we reach here, the test passes
         } catch (e: Exception) {
             fail("checkCanceled should not throw exception")
         }

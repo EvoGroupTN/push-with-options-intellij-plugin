@@ -27,7 +27,7 @@ class CommitAndPushActionTest {
     @Test
     fun `test executorId is valid identifier format`() {
         val executorId = action.executorId
-        // executorId should follow a valid identifier pattern (contains letters and dots/periods)
+        // executorId should be a valid identifier string (contains letters, digits, and dots)
         assertTrue("executorId should be a valid identifier string", 
             executorId.matches(Regex("^[a-zA-Z0-9.]+$")))
     }
