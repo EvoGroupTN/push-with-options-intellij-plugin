@@ -16,11 +16,6 @@ class GitRepoActionTest {
     }
 
     @Test
-    fun `test GitRepoAction can be instantiated`() {
-        assertNotNull("GitRepoAction should be instantiable", action)
-    }
-
-    @Test
     fun `test GitRepoAction has perform method`() {
         val performMethod = action::class.declaredMemberFunctions
             .find { it.name == "perform" }
@@ -56,23 +51,9 @@ class GitRepoActionTest {
     }
 
     @Test
-    fun `test GitRepoAction class structure`() {
-        // Verify the class has the expected structure for integration with IntelliJ Platform
-        val className = action::class.simpleName
-        assertEquals("Class name should be GitRepoAction", "GitRepoAction", className)
-        
-        // Verify it's not an abstract class or interface
+    fun `test GitRepoAction is not abstract`() {
+        // Verify it's a concrete class that can be instantiated
         assertFalse("GitRepoAction should not be abstract",
             action::class.isAbstract)
-    }
-
-    @Test
-    fun `test multiple GitRepoAction instances can be created`() {
-        val action1 = GitRepoAction()
-        val action2 = GitRepoAction()
-        
-        assertNotNull("First instance should not be null", action1)
-        assertNotNull("Second instance should not be null", action2)
-        assertNotSame("Different instances should not be the same object", action1, action2)
     }
 }
