@@ -4,6 +4,7 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.VcsNotifier
+import com.intellij.util.execution.ParametersListUtil
 import git4idea.GitUtil
 import git4idea.GitVcs
 import git4idea.commands.*
@@ -92,9 +93,7 @@ class GitRepoAction {
                 h.addParameters(repository.currentBranchName)
             }
             h.addParameters("--progress")
-            pushOptions.forEach { option ->
-                h.addParameters(option)
-            }
+            h.addParameters(pushOptions.flatMap { ParametersListUtil.parse(it) })
             h
         }
         return result
