@@ -29,9 +29,11 @@ class AppSettingsStateTest {
     @Test
     fun `test getState returns self`() {
         val state = AppSettingsState()
+        state.isCommitAndPushHidden = true
         val returnedState = state.getState()
         assertNotNull("getState should not return null", returnedState)
         assertSame("getState should return the same instance", state, returnedState)
+        assertTrue("Returned state should preserve property value", returnedState!!.isCommitAndPushHidden)
     }
 
     @Test
