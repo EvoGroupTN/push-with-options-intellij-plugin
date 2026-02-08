@@ -33,6 +33,9 @@ kotlin {
 
 // Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 dependencies {
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    
     intellijPlatform {
         val pluginName = providers.gradleProperty("pluginName")
         val version = providers.gradleProperty("platformVersion")
@@ -51,6 +54,15 @@ dependencies {
 }
 
 tasks {
+    test {
+        useJUnit()
+        testLogging {
+            events("passed", "skipped", "failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+            showStandardStreams = false
+        }
+    }
+    
     wrapper {
         gradleVersion = properties("gradleVersion").get()
     }

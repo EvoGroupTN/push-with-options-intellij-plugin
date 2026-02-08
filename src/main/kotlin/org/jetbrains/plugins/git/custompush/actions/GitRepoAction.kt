@@ -21,27 +21,38 @@ class GitRepoAction {
 
     fun perform(project: Project) {
         getRemoteBranchName(project)
-        val dialog = GitPushDialog(project, trackInfo?.remoteBranch?.name, true)
+        // Extract branch name without remote prefix (e.g., "origin/main" -> "main")
+        val defaultRemoteBranchName = trackInfo?.remoteBranch?.nameForRemoteOperations
+        val dialog = GitPushDialog(project, defaultRemoteBranchName, true)
         dialog.show()
         if (dialog.isOK()) {
-            runPush(project, dialog.getPushOptions())
+            try {
+                runPush(project, dialog.getPushOptions(), dialog.getRemoteBranch())
+            } catch (e: IllegalArgumentException) {
+                VcsNotifier.getInstance(project).notifyError(
+                    "git.custompush.error",
+                    "Invalid branch name",
+                    e.message ?: "Please enter a valid branch name"
+                )
+            }
         }
     }
 
     private fun getRemoteBranchName(project: Project) {
         runBlocking(Dispatchers.Default) {
-            repository = GitRepositoryManager.getInstance(project).repositories.first() ?: error("No git repository found")
+            repository = GitRepositoryManager.getInstance(project).repositories.firstOrNull() ?: error("No git repository found")
             trackInfo = GitUtil.getTrackInfoForCurrentBranch(repository)
         }
     }
 
     private fun runPush(project: Project,
-                        pushOptions: List<String>) {
+                        pushOptions: List<String>,
+                        remoteBranch: String) {
         val task: Task.Backgroundable =
             object : Task.Backgroundable(project, "push with options", false) {
                 override fun run(indicator: ProgressIndicator) {
                     indicator.checkCanceled()
-                    val result: GitCommandResult = push(repository, pushOptions)
+                    val result: GitCommandResult = push(repository, pushOptions, remoteBranch)
                     indicator.checkCanceled()
                     handleResult(project, result)
                 }
@@ -70,7 +81,8 @@ class GitRepoAction {
 
     private fun push(
         repository: GitRepository,
-        pushOptions: List<String>
+        pushOptions: List<String>,
+        remoteBranch: String
     ): GitCommandResult {
         val gitRemote = trackInfo?.remote
         val url = gitRemote?.firstUrl ?: repository.remotes.firstOrNull()?.firstUrl
@@ -87,10 +99,11 @@ class GitRepoAction {
             h.addLineListener(progressListener)
             if (gitRemote?.name != null) {
                 h.addParameters(gitRemote.name)
+                h.addParameters("HEAD:$remoteBranch")
             } else {
                 h.addParameters("--set-upstream")
                 h.addParameters("origin")
-                h.addParameters(repository.currentBranchName)
+                h.addParameters("HEAD:$remoteBranch")
             }
             h.addParameters("--progress")
             h.addParameters(pushOptions.flatMap { ParametersListUtil.parse(it) })

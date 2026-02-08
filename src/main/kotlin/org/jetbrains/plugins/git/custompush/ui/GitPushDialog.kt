@@ -18,13 +18,19 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
     private val PUSH_OPTIONS_FILE = ".push-options"
 
     private var panel: JBPanel<JBPanel<*>>? = null
+    private val remoteBranchTextField: JBTextField
     private val otherOptionsCheckBox: JBCheckBox
     private val otherOptionsTextField: JBTextField
     private val checkboxes = ArrayList<JBCheckBox>()
 
     init {
-        remoteBranch = remoteBranch?:"new branch"
-        title = "Push to $remoteBranch"
+        remoteBranch = remoteBranch ?: "new branch"
+        title = "Push Options"
+        
+        // Initialize remote branch text field
+        remoteBranchTextField = JBTextField()
+        remoteBranchTextField.text = remoteBranch
+        
         var pushOptionsFile = File(project.basePath + "/" + PUSH_OPTIONS_FILE)
         if (!(pushOptionsFile.exists() && pushOptionsFile.isFile()))
             pushOptionsFile = File(System.getProperty("user.home") + "/" + PUSH_OPTIONS_FILE)
@@ -35,7 +41,13 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
                 }
             }
         }
-        panel = JBPanel<JBPanel<*>>(GridLayout(checkboxes.size + 2, 1))
+        panel = JBPanel<JBPanel<*>>(GridLayout(checkboxes.size + 4, 1))
+        
+        // Add remote branch field with label
+        val remoteBranchLabel = com.intellij.ui.components.JBLabel("Remote branch:")
+        panel!!.add(remoteBranchLabel)
+        panel!!.add(remoteBranchTextField)
+        
         checkboxes.forEach {
             panel!!.add(it)
         }
@@ -78,6 +90,31 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
         if (otherOptionsCheckBox.isSelected) pushOptions.add(otherOptionsTextField.text)
         return pushOptions
     }
+    
+    fun getRemoteBranch(): String {
+        val branchName = remoteBranchTextField.text.trim()
+        // Validate branch name to prevent command injection and ensure valid Git branch names
+        // Git branch names rules:
+        // - Cannot be empty
+        // - Can contain alphanumeric, /, -, _, . characters (underscores are allowed)
+        // - Cannot contain consecutive dots (..)
+        // - Cannot start or end with ., /, or -
+        if (branchName.isEmpty()) {
+            throw IllegalArgumentException("Branch name cannot be empty")
+        }
+        if (!branchName.matches(Regex("^[a-zA-Z0-9/_.-]+$"))) {
+            throw IllegalArgumentException("Branch name contains invalid characters")
+        }
+        if (branchName.contains("..")) {
+            throw IllegalArgumentException("Branch name cannot contain consecutive dots (..)")
+        }
+        if (branchName.startsWith(".") || branchName.endsWith(".") || 
+            branchName.startsWith("/") || branchName.endsWith("/") ||
+            branchName.startsWith("-") || branchName.endsWith("-")) {
+            throw IllegalArgumentException("Branch name cannot start or end with '.', '/', or '-'")
+        }
+        return branchName
+    }
 
     private fun loadSavedSettings() {
         val propertiesComponent = PropertiesComponent.getInstance()
@@ -88,6 +125,9 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
         otherOptionsTextField.text = propertiesComponent.getValue(OTHER_OPTIONS_TEXT_KEY, "")
         otherOptionsTextField.isEnabled = otherOptionsCheckBox.isSelected
         otherOptionsTextField.isEditable = otherOptionsCheckBox.isSelected
+        
+        // Note: We don't load saved remote branch to avoid confusion
+        // The dialog always shows the current tracked branch or "new branch" as default
     }
 
     private fun saveSettings() {
@@ -97,5 +137,6 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
         }
         propertiesComponent.setValue(OTHER_OPTIONS_KEY, otherOptionsCheckBox.isSelected.toString())
         propertiesComponent.setValue(OTHER_OPTIONS_TEXT_KEY, otherOptionsTextField.text)
+        // Note: We don't save remote branch as it should be determined per push operation
     }
 }
