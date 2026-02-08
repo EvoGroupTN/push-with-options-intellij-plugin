@@ -54,10 +54,6 @@ dependencies {
 }
 
 tasks {
-    wrapper {
-        gradleVersion = properties("gradleVersion").get()
-    }
-    
     test {
         useJUnit()
         testLogging {
@@ -65,5 +61,9 @@ tasks {
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
             showStandardStreams = false
         }
+    }
+    
+    wrapper {
+        gradleVersion = properties("gradleVersion").get()
     }
 }
