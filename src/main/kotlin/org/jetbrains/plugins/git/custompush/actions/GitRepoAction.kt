@@ -20,7 +20,9 @@ class GitRepoAction {
 
     fun perform(project: Project) {
         getRemoteBranchName(project)
-        val dialog = GitPushDialog(project, trackInfo?.remoteBranch?.name, true)
+        // Extract branch name without remote prefix (e.g., "origin/main" -> "main")
+        val branchNameOnly = trackInfo?.remoteBranch?.nameForRemoteOperations
+        val dialog = GitPushDialog(project, branchNameOnly, true)
         dialog.show()
         if (dialog.isOK()) {
             try {
