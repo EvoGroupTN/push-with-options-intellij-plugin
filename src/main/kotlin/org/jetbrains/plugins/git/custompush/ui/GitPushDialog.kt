@@ -24,7 +24,8 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
     private val checkboxes = ArrayList<JBCheckBox>()
 
     init {
-        remoteBranch = remoteBranch ?: "new branch"
+        // Fallback to empty string if no branch name is available (e.g., detached HEAD)
+        remoteBranch = remoteBranch ?: ""
         title = "Push Options"
         
         // Initialize remote branch text field
@@ -127,7 +128,7 @@ class GitPushDialog(project: Project, private var remoteBranch: String?, canBePa
         otherOptionsTextField.isEditable = otherOptionsCheckBox.isSelected
         
         // Note: We don't load saved remote branch to avoid confusion
-        // The dialog always shows the current tracked branch or "new branch" as default
+        // The dialog always shows the tracked remote branch or local branch name as default
     }
 
     private fun saveSettings() {
