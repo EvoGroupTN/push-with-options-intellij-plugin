@@ -14,12 +14,11 @@
     </description>
     <category>Version Controls</category>
     <vendor>Hakeem</vendor>
-    <version>2.4.0</version>
+    <version>2.4.1</version>
     <idea-version since-build="233"/>
     <change-notes><![CDATA[
     <ul>
-    <li>Add target branch option</li>
-    <li>Fix the double quote issue. Thanks to <a href="https://github.com/HeeJoon-Kim">HeeJoon-Kim</a></li>
+    <li>If no remote branch is set, the local branch is set as a default branch instead of "new branch"</li>
     </ul>
     ]]></change-notes>
 
